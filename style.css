@@ -1,0 +1,448 @@
+/* RESET DE ESTILOS GERAIS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --bg-dark: #2b2b2b;
+    --bg-light: #ffffff;
+    --text-white: #ffffff;
+    --text-gray: #a0a0a0;
+    --primary-blue: #004b87;
+    --accent-gold: #f4b41a;
+    --input-bg: #ffffff;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* NAVBAR */
+.navbar {
+    background-color: var(--bg-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.logo .ticket {
+    color: var(--primary-blue);
+}
+
+.logo .flow {
+    color: var(--accent-gold);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--primary-blue);
+}
+
+.btn-connect {
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-connect:hover {
+    background-color: #333333;
+}
+
+/* CONTEÚDO PRINCIPAL (LOGIN) */
+.main-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 5%;
+}
+
+.content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    width: 100%;
+    max-width: 1100px;
+    align-items: center;
+}
+
+.login-box h1 {
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+}
+
+.login-box .subtitle {
+    color: var(--text-gray);
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 400px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 0.85rem;
+    color: var(--text-gray);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 6px;
+    border: none;
+    background-color: var(--input-bg);
+    color: #333;
+    font-size: 1rem;
+}
+
+.input-group input:focus {
+    outline: 2px solid var(--accent-gold);
+}
+
+.btn-submit {
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #333;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #222222;
+}
+
+/* ILUSTRAÇÃO */
+.illustration-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.promo-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* RODAPÉ (FOOTER) */
+.footer {
+    background-color: var(--bg-light);
+    color: #333;
+    padding: 40px 5%;
+    margin-top: auto;
+    border-top: 1px solid #e0e0e0;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icons a {
+    color: #666;
+    font-size: 1.2rem;
+    transition: color 0.3s;
+}
+
+.social-icons a:hover {
+    color: var(--primary-blue);
+}
+
+.footer-links {
+    display: flex;
+    gap: 60px;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-column h3 {
+    font-size: 0.95rem;
+    color: #000;
+    margin-bottom: 5px;
+}
+
+.footer-column a {
+    text-decoration: none;
+    color: #666;
+    font-size: 0.85rem;
+    transition: color 0.3s;
+}
+
+.footer-column a:hover {
+    color: var(--primary-blue);
+}
+
+/* RESPONSIVIDADE (RNF01) */
+@media (max-width: 768px) {
+    .content-wrapper {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+    }
+
+    form {
+        margin: 0 auto;
+    }
+
+    .illustration-box {
+        order: -1; /* Coloca a imagem no topo no mobile */
+    }
+
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-links {
+        gap: 40px;
+    }
+}
+/* ESTILOS EXCLUSIVOS DO DASHBOARD */
+.dashboard-wrapper {
+    display: block !important; /* Muda de duas colunas para uma seção fluída vertical */
+    width: 100%;
+}
+
+.welcome-box h1 {
+    font-size: 2.2rem;
+    color: var(--accent-gold);
+    margin-bottom: 10px;
+}
+
+.dashboard-tabs {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-gray);
+    font-size: 1rem;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 5px;
+}
+
+.tab-btn i {
+    margin-right: 8px;
+}
+
+.tab-btn:hover, .tab-btn.active {
+    color: var(--bg-light);
+    background-color: var(--primary-blue);
+}
+
+.tab-content {
+    display: none;
+    margin-top: 30px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.section-desc {
+    color: var(--text-gray);
+    margin-bottom: 25px;
+}
+
+/* CARDS DOS JOGOS DA COPA */
+.matches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.match-card {
+    background-color: #3a3a3a;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    border-left: 5px solid var(--accent-gold);
+    transition: transform 0.2s;
+}
+
+.match-card:hover {
+    transform: translateY(-5px);
+}
+
+.match-teams {
+    font-size: 1.25rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.match-teams span {
+    color: var(--text-white);
+}
+
+.vs-badge {
+    font-size: 0.8rem;
+    background: var(--primary-blue);
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+.match-info-row {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    margin-bottom: 8px;
+}
+
+.match-info-row i {
+    width: 20px;
+    color: var(--accent-gold);
+}
+
+.btn-buy-ticket {
+    width: 100%;
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.btn-buy-ticket:hover {
+    background-color: #003360;
+}
+
+/* CONFIGURAÇÕES */
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.setting-item {
+    background: #3a3a3a;
+    padding: 15px 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.setting-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.setting-info p {
+    font-size: 0.85rem;
+    color: var(--text-gray);
+}
+
+.btn-action {
+    background: #555;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-danger {
+    background: #cc0000;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.empty-tickets {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-gray);
+}
+
+.empty-tickets p {
+    margin-top: 15px;
+}

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicketFlow - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <span class="ticket">TICKET</span><span class="flow">FLOW</span>
+        </div>
+        <nav class="nav-links">
+            <a href="#" class="active"><i class="fas fa-chart-line"></i> Painel</a>
+            <a href="#"><i class="fas fa-ticket-alt"></i> Meus Ingressos</a>
+            <a href="#"><i class="fas fa-user-cog"></i> Configurações</a>
+            <button class="btn-connect" id="btnLogout">Sair <i class="fas fa-sign-out-alt"></i></button>
+        </nav>
+    </header>
+
+    <main class="main-container dashboard-container">
+        <div class="content-wrapper dashboard-wrapper">
+            
+            <section class="welcome-box">
+                <h1>Olá, <span id="welcomeUsername">Torcedor</span>! 👋</h1>
+                <p class="subtitle">Bem-vindo ao seu painel da Copa do Mundo 2026. Escolha uma das opções abaixo:</p>
+                
+                <div class="dashboard-tabs">
+                    <button class="tab-btn active" onclick="switchTab('jogos')"><i class="fas fa-soccer-ball"></i> Comprar Ingressos</button>
+                    <button class="tab-btn" onclick="switchTab('ingressos')"><i class="fas fa-id-card"></i> Ingressos Comprados</button>
+                    <button class="tab-btn" onclick="switchTab('perfil')"><i class="fas fa-user-shield"></i> Segurança e Conta</button>
+                </div>
+            </section>
+
+            <section class="dashboard-content">
+                
+                <div id="tab-jogos" class="tab-content active">
+                    <h2><i class="fas fa-calendar-alt"></i> Próximos Jogos Disponíveis</h2>
+                    <p class="section-desc">Selecione o confronto e garanta o seu lugar na história.</p>
+                    
+                    <div class="matches-grid" id="matchesContainer">
+                        <div class="loading-status">Carregando jogos do cofre...</div>
+                    </div>
+                </div>
+
+                <div id="tab-ingressos" class="tab-content">
+                    <h2><i class="fas fa-ticket-alt"></i> Seus Bilhetes Guardados</h2>
+                    <p class="section-desc">Abaixo estão os ingressos vinculados de forma segura ao seu CPF/E-mail.</p>
+                    
+                    <div class="my-tickets-list">
+                        <div class="empty-tickets">
+                            <i class="fas fa-qrcode fa-3x"></i>
+                            <p>Você ainda não comprou nenhum ingresso. Que tal escolher um jogo acima?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-perfil" class="tab-content">
+                    <h2><i class="fas fa-user-lock"></i> Configurações Importantes de Conta</h2>
+                    <p class="section-desc">Gerencie a segurança dos seus dados e preferências da plataforma.</p>
+                    
+                    <div class="settings-form">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Autenticação em Duas Etapas (2FA)</h3>
+                                <p>Proteja as suas compras exigindo um código no telemóvel.</p>
+                            </div>
+                            <button class="btn-action">Ativar</button>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h3>Alterar Palavra-passe</h3>
+                                <p>Recomendamos mudar a sua senha a cada 6 meses.</p>
+                            </div>
+                            <button class="btn-action">Modificar</button>
+                        </div>
+                        <div class="setting-item delete-account">
+                            <div class="setting-info">
+                                <h3>Eliminar Conta de Utilizador</h3>
+                                <p>Apaga permanentemente os teves dados e histórico de ingressos.</p>
+                            </div>
+                            <button class="btn-danger">Excluir Conta</button>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="logo">
+                    <span class="ticket">TICKET</span><span class="flow">FLOW</span>
+                </div>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h3>Sobre</h3>
+                    <a href="#">Quem somos</a>
+                    <a href="#">Perguntas frequentes</a>
+                </div>
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <a href="#">Abrir ticket</a>
+                    <a href="#">Soluções</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
