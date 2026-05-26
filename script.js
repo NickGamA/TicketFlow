@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             try {
-                const resposta = await fetch('http://127.0.0.1:8000/api/auth/register', {
+                const resposta = await fetch('https://ticketflow-u6mx.onrender.com/api/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(dadosDoUsuario)
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             try {
-                const resposta = await fetch('http://127.0.0.1:8000/api/auth/login', {
+                const resposta = await fetch('https://ticketflow-u6mx.onrender.com/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(credenciais)
@@ -129,7 +129,7 @@ async function loadMatchesFromBackend() {
     if (!container) return;
     
     try {
-        const resposta = await fetch('http://127.0.0.1:8000/api/matches');
+        const resposta = await fetch('https://ticketflow-u6mx.onrender.com/api/matches');
         const jogos = await resposta.json();
 
         if (resposta.ok && jogos.length > 0) {
