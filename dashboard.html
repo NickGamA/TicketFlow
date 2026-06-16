@@ -29,9 +29,9 @@
                 <p class="subtitle">Bem-vindo ao seu painel da Copa do Mundo 2026. Escolha uma das opções abaixo:</p>
                 
                 <div class="dashboard-tabs">
-                    <button class="tab-btn active" onclick="switchTab('jogos')"><i class="fas fa-soccer-ball"></i> Comprar Ingressos</button>
-                    <button class="tab-btn" onclick="switchTab('ingressos')"><i class="fas fa-id-card"></i> Ingressos Comprados</button>
-                    <button class="tab-btn" onclick="switchTab('perfil')"><i class="fas fa-user-shield"></i> Segurança e Conta</button>
+                    <button class="tab-btn active" onclick="switchTab('jogos', event)"><i class="fas fa-soccer-ball"></i> Comprar Ingressos</button>
+                    <button class="tab-btn" onclick="switchTab('ingressos', event)"><i class="fas fa-id-card"></i> Ingressos Comprados</button>
+                    <button class="tab-btn" onclick="switchTab('perfil', event)"><i class="fas fa-user-shield"></i> Segurança e Conta</button>
                 </div>
             </section>
 
@@ -50,7 +50,7 @@
                     <h2><i class="fas fa-ticket-alt"></i> Seus Bilhetes Guardados</h2>
                     <p class="section-desc">Abaixo estão os ingressos vinculados de forma segura ao seu CPF/E-mail.</p>
                     
-                    <div class="my-tickets-list">
+                    <div id="myTicketsContainer" class="my-tickets-list">
                         <div class="empty-tickets">
                             <i class="fas fa-qrcode fa-3x"></i>
                             <p>Você ainda não comprou nenhum ingresso. Que tal escolher um jogo acima?</p>
@@ -121,87 +121,88 @@
     </footer>
 
     <script src="script.js"></script>
+
     <div id="checkoutModal" class="modal-overlay" style="display: none;">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2><i class="fas fa-shopping-cart"></i> Finalizar Compra</h2>
-            <button class="close-modal" onclick="closeCheckout()">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div class="summary-box">
-                <p><strong>Partida:</strong> <span id="modalMatchTeams">Brasil VS Portugal</span></p>
-                <p><strong>Estádio:</strong> <span id="modalMatchStadium">Maracanã</span></p>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-shopping-cart"></i> Finalizar Compra</h2>
+                <button class="close-modal" onclick="closeCheckout()">&times;</button>
             </div>
-
-            <form id="purchaseForm" onsubmit="processPurchase(event)">
-                <div class="form-group-ticket">
-                    <label for="ticketQuantity">Quantidade de Ingressos:</label>
-                    <input type="number" id="ticketQuantity" min="1" max="5" value="1" required onchange="updateTotalPrice()">
+            <div class="modal-body">
+                <div class="summary-box">
+                    <p><strong>Partida:</strong> <span id="modalMatchTeams">Brasil VS Portugal</span></p>
+                    <p><strong>Estádio:</strong> <span id="modalMatchStadium">Maracanã</span></p>
                 </div>
 
-                <div class="payment-section">
-                    <h3>Forma de Pagamento</h3>
-                    <div class="payment-options">
-                        <label class="payment-radio">
-                            <input type="radio" name="paymentMethod" value="Pix" checked onchange="togglePaymentFields()">
-                            <span class="radio-box"><i class="fast fa-bolt"></i> PIX (Aprovação Imediata)</span>
-                        </label>
-                        <label class="payment-radio">
-                            <input type="radio" name="paymentMethod" value="Cartão de Crédito" onchange="togglePaymentFields()">
-                            <span class="radio-box"><i class="fas fa-credit-card"></i> Cartão de Crédito</span>
-                        </label>
+                <form id="purchaseForm" onsubmit="processPurchase(event)">
+                    <div class="form-group-ticket">
+                        <label for="ticketQuantity">Quantidade de Ingressos:</label>
+                        <input type="number" id="ticketQuantity" min="1" max="5" value="1" required onchange="updateTotalPrice()">
                     </div>
-                </div>
 
-                <div id="creditCardFields" style="display: none;" class="card-fields-box">
-                    <input type="text" placeholder="Número do Cartão" pattern="\d{16}" class="modal-input">
-                    <div class="input-row">
-                        <input type="text" placeholder="MM/AA" pattern="\d{2}/\d{2}" class="modal-input">
-                        <input type="text" placeholder="CVV" pattern="\d{3}" class="modal-input">
+                    <div class="payment-section">
+                        <h3>Forma de Pagamento</h3>
+                        <div class="payment-options">
+                            <label class="payment-radio">
+                                <input type="radio" name="paymentMethod" value="Pix" checked onchange="togglePaymentFields()">
+                                <span class="radio-box"><i class="fast fa-bolt"></i> PIX (Aprovação Imediata)</span>
+                            </label>
+                            <label class="payment-radio">
+                                <input type="radio" name="paymentMethod" value="Cartão de Crédito" onchange="togglePaymentFields()">
+                                <span class="radio-box"><i class="fas fa-credit-card"></i> Cartão de Crédito</span>
+                            </label>
+                        </div>
                     </div>
-                </div>
 
-                <div class="price-summary">
-                    <p>Preço por unidade: <strong>R$ 150,00</strong></p>
-                    <h2>Total: <span id="modalTotalPrice">R$ 150,00</span></h2>
-                </div>
+                    <div id="creditCardFields" style="display: none;" class="card-fields-box">
+                        <input type="text" placeholder="Número do Cartão" pattern="\d{16}" class="modal-input">
+                        <div class="input-row">
+                            <input type="text" placeholder="MM/AA" pattern="\d{2}/\d{2}" class="modal-input">
+                            <input type="text" placeholder="CVV" pattern="\d{3}" class="modal-input">
+                        </div>
+                    </div>
 
-                <button type="submit" class="btn-confirm-purchase">Confirmar e Pagar</button>
-            </form>
+                    <div class="price-summary">
+                        <p>Preço por unidade: <strong>R$ 150,00</strong></p>
+                        <h2>Total: <span id="modalTotalPrice">R$ 150,00</span></h2>
+                    </div>
+
+                    <button type="submit" class="btn-confirm-purchase">Confirmar e Pagar</button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
-<div id="voucherModal" class="modal-overlay" style="display: none;">
-    <div class="modal-content voucher-content">
-        <div class="success-icon">🎉</div>
-        <h2>Compra Confirmada com Sucesso!</h2>
-        <p>O seu ingresso digital foi gerado e está pronto.</p>
-        
-        <div class="ticket-voucher" id="ticketPrintArea">
-            <div class="ticket-tag">INGRESSO OFICIAL</div>
-            <div class="ticket-main-info">
-                <h3 id="vchTeams">CONFRONTO</h3>
-                <p><i class="fas fa-map-marker-alt"></i> Local: <span id="vchStadium">-</span></p>
-                <p><i class="fas fa-calendar-alt"></i> Data: <span id="vchDate">-</span></p>
+    <div id="voucherModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content voucher-content">
+            <div class="success-icon">🎉</div>
+            <h2>Compra Confirmada com Sucesso!</h2>
+            <p>O seu ingresso digital foi gerado e está pronto.</p>
+            
+            <div class="ticket-voucher" id="ticketPrintArea">
+                <div class="ticket-tag">INGRESSO OFICIAL</div>
+                <div class="ticket-main-info">
+                    <h3 id="vchTeams">CONFRONTO</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Local: <span id="vchStadium">-</span></p>
+                    <p><i class="fas fa-calendar-alt"></i> Data: <span id="vchDate">-</span></p>
+                </div>
+                <div class="ticket-details-grid">
+                    <div><strong>Comprador:</strong> <p id="vchUser">-</p></div>
+                    <div><strong>Qtd:</strong> <p id="vchQty">-</p></div>
+                    <div><strong>Total Pago:</strong> <p id="vchTotal">-</p></div>
+                    <div><strong>Pagamento:</strong> <p id="vchMethod">-</p></div>
+                </div>
+                <div class="ticket-footer-info">
+                    <p>Data de Aquisição: <span id="vchTimestamp">-</span></p>
+                    <p class="ticket-code">CÓDIGO DE AUTENTICAÇÃO: <strong id="vchCode">-</strong></p>
+                </div>
             </div>
-            <div class="ticket-details-grid">
-                <div><strong>Comprador:</strong> <p id="vchUser">-</p></div>
-                <div><strong>Qtd:</strong> <p id="vchQty">-</p></div>
-                <div><strong>Total Pago:</strong> <p id="vchTotal">-</p></div>
-                <div><strong>Pagamento:</strong> <p id="vchMethod">-</p></div>
-            </div>
-            <div class="ticket-footer-info">
-                <p>Data de Aquisição: <span id="vchTimestamp">-</span></p>
-                <p class="ticket-code">CÓDIGO DE AUTENTICAÇÃO: <strong id="vchCode">-</strong></p>
-            </div>
-        </div>
 
-        <div class="modal-actions">
-            <button class="btn-download" onclick="window.print()">Imprimir / Salvar PDF</button>
-            <button class="btn-close-success" onclick="closeVoucherSuccess()">Voltar ao Painel</button>
+            <div class="modal-actions">
+                <button class="btn-download" onclick="window.print()">Imprimir / Salvar PDF</button>
+                <button class="btn-close-success" onclick="closeVoucherSuccess()">Voltar ao Painel</button>
+            </div>
         </div>
     </div>
-</div>
 </body>
 </html>
