@@ -228,4 +228,3 @@ function closeVoucherSuccess() {
     document.getElementById('voucherModal').style.display = 'none';
     loadMatchesFromBackend(); // Recarrega os dados da tela
 }
-}
