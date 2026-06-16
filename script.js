@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
             welcomeElement.textContent = savedUsername;
         }
         loadMatchesFromBackend();
+        loadMyTickets(); // <-- ADICIONE ESTA LINHA AQUI!
     }
 
     // ---- FLUXO D: SAÍDA SEGURA (LOGOUT) ----
