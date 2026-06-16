@@ -123,7 +123,11 @@ function switchTab(tabName) {
         targetTab.classList.add('active');
     }
 }
+// Variável de controle global para guardar os dados do jogo selecionado
+let selectedMatch = null;
+const TICKET_PRICE = 150.00;
 
+// Atualização da função de carregamento para conectar ao Modal de compra real
 async function loadMatchesFromBackend() {
     const container = document.getElementById('matchesContainer');
     if (!container) return;
@@ -152,7 +156,7 @@ async function loadMatchesFromBackend() {
                     <div class="match-info-row">
                         <i class="fas fa-ticket-alt"></i> Disponíveis: ${jogo.available_tickets.toLocaleString()}
                     </div>
-                    <button class="btn-buy-ticket" onclick="alert('Funcionalidade de pagamento será integrada a seguir!')">Comprar Bilhete</button>
+                    <button class="btn-buy-ticket" onclick="openCheckout(${JSON.stringify(jogo).replace(/"/g, '&quot;')})">Comprar Bilhete</button>
                 `;
                 container.appendChild(card);
             });
@@ -163,4 +167,65 @@ async function loadMatchesFromBackend() {
         container.innerHTML = '<div class="loading-status" style="color: red;">Erro ao conectar com o servidor Python para trazer os jogos.</div>';
         console.error(erro);
     }
+}
+
+// CONTROLES DO MODAL DE CHECKOUT
+function openCheckout(jogo) {
+    selectedMatch = jogo;
+    document.getElementById('modalMatchTeams').textContent = `${jogo.team_a} VS ${jogo.team_b}`;
+    document.getElementById('modalMatchStadium').textContent = jogo.stadium;
+    document.getElementById('ticketQuantity').value = 1;
+    updateTotalPrice();
+    document.getElementById('checkoutModal').style.display = 'flex';
+}
+
+function closeCheckout() {
+    document.getElementById('checkoutModal').style.display = 'none';
+}
+
+function updateTotalPrice() {
+    const qty = document.getElementById('ticketQuantity').value;
+    const total = qty * TICKET_PRICE;
+    document.getElementById('modalTotalPrice').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+}
+
+function togglePaymentFields() {
+    const method = document.querySelector('input[name="paymentMethod"]:checked').value;
+    const cardFields = document.getElementById('creditCardFields');
+    cardFields.style.display = (method === 'Cartão de Crédito') ? 'block' : 'none';
+}
+
+// PROCESSAMENTO E ANEXO DE CONFIRMAÇÃO
+function processPurchase(event) {
+    event.preventDefault();
+    
+    const qty = document.getElementById('ticketQuantity').value;
+    const method = document.querySelector('input[name="paymentMethod"]:checked').value;
+    const total = qty * TICKET_PRICE;
+    const username = localStorage.getItem('username') || 'Usuário';
+
+    // Gerando código de autenticação hash falso mas visualmente profissional
+    const authCode = 'TKF-' + Math.random().toString(36).substring(2, 9).toUpperCase() + '-' + qty;
+    const timestamp = new Date().toLocaleString('pt-BR');
+
+    // Preenchendo o anexo/voucher oficial
+    document.getElementById('vchTeams').textContent = `${selectedMatch.team_a} VS ${selectedMatch.team_b}`;
+    document.getElementById('vchStadium').textContent = selectedMatch.stadium;
+    document.getElementById('vchDate').textContent = selectedMatch.date_time;
+    document.getElementById('vchUser').textContent = username;
+    document.getElementById('vchQty').textContent = `${qty}x Ingresso(s)`;
+    document.getElementById('vchTotal').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+    document.getElementById('vchMethod').textContent = method;
+    document.getElementById('vchTimestamp').textContent = timestamp;
+    document.getElementById('vchCode').textContent = authCode;
+
+    // Fechar tela de pagamento e abrir comprovante oficial
+    closeCheckout();
+    document.getElementById('voucherModal').style.display = 'flex';
+}
+
+function closeVoucherSuccess() {
+    document.getElementById('voucherModal').style.display = 'none';
+    loadMatchesFromBackend(); // Recarrega os dados da tela
+}
 }
