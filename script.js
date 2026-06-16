@@ -204,20 +204,37 @@ function processPurchase(event) {
     const total = qty * TICKET_PRICE;
     const username = localStorage.getItem('username') || 'Usuário';
 
-    // Gerando código de autenticação hash falso mas visualmente profissional
+    // Gerando código de autenticação único
     const authCode = 'TKF-' + Math.random().toString(36).substring(2, 9).toUpperCase() + '-' + qty;
     const timestamp = new Date().toLocaleString('pt-BR');
 
-    // Preenchendo o anexo/voucher oficial
-    document.getElementById('vchTeams').textContent = `${selectedMatch.team_a} VS ${selectedMatch.team_b}`;
-    document.getElementById('vchStadium').textContent = selectedMatch.stadium;
-    document.getElementById('vchDate').textContent = selectedMatch.date_time;
+    // 1. SALVAR O INGRESSO COMPRADO NO LOCALSTORAGE (MÉMÓRIA DO NAVEGADOR)
+    const novoIngresso = {
+        confronto: `${selectedMatch.team_a} VS ${selectedMatch.team_b}`,
+        estadio: selectedMatch.stadium,
+        dataJogo: selectedMatch.date_time,
+        quantidade: qty,
+        totalPago: `R$ ${total.toFixed(2).replace('.', ',')}`,
+        metodoPagamento: method,
+        dataCompra: timestamp,
+        codigo: authCode
+    };
+
+    // Pega os ingressos que já existem ou cria uma lista vazia se for o primeiro
+    let listaIngressos = JSON.parse(localStorage.getItem('meusIngressos')) || [];
+    listaIngressos.push(novoIngresso);
+    localStorage.setItem('meusIngressos', JSON.stringify(listaIngressos));
+
+    // Preenchendo o anexo/voucher oficial da tela de sucesso
+    document.getElementById('vchTeams').textContent = novoIngresso.confronto;
+    document.getElementById('vchStadium').textContent = novoIngresso.estadio;
+    document.getElementById('vchDate').textContent = novoIngresso.dataJogo;
     document.getElementById('vchUser').textContent = username;
     document.getElementById('vchQty').textContent = `${qty}x Ingresso(s)`;
-    document.getElementById('vchTotal').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
-    document.getElementById('vchMethod').textContent = method;
-    document.getElementById('vchTimestamp').textContent = timestamp;
-    document.getElementById('vchCode').textContent = authCode;
+    document.getElementById('vchTotal').textContent = novoIngresso.totalPago;
+    document.getElementById('vchMethod').textContent = novoIngresso.metodoPagamento;
+    document.getElementById('vchTimestamp').textContent = novoIngresso.dataCompra;
+    document.getElementById('vchCode').textContent = novoIngresso.codigo;
 
     // Fechar tela de pagamento e abrir comprovante oficial
     closeCheckout();
@@ -226,5 +243,45 @@ function processPurchase(event) {
 
 function closeVoucherSuccess() {
     document.getElementById('voucherModal').style.display = 'none';
-    loadMatchesFromBackend(); // Recarrega os dados da tela
+    loadMatchesFromBackend(); // Recarrega os jogos da tela principal
+    loadMyTickets();          // Atualiza a aba de ingressos comprados imediatamente
+}
+
+// 2. NOVA FUNÇÃO: LER OS INGRESSOS SALVOS E MOSTRAR NA ABA DO DASHBOARD
+function loadMyTickets() {
+    const container = document.getElementById('myTicketsContainer');
+    if (!container) return;
+
+    const ingressos = JSON.parse(localStorage.getItem('meusIngressos')) || [];
+
+    if (ingressos.length === 0) {
+        container.innerHTML = '<p class="no-tickets">Você ainda não comprou nenhum ingresso.</p>';
+        return;
+    }
+
+    container.innerHTML = ''; // Limpa o texto de "nenhum ingresso"
+
+    // Renderiza cada ingresso comprado de forma elegante
+    ingressos.forEach(ing => {
+        const ticketCard = document.createElement('div');
+        ticketCard.className = 'ticket-history-card';
+        ticketCard.style.cssText = "background: #16213e; border: 1px dashed #00f2fe; padding: 15px; border-radius: 8px; margin-bottom: 15px; color: #fff;";
+        
+        ticketCard.innerHTML = `
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #0f3460; padding-bottom: 8px; margin-bottom: 10px;">
+                <strong style="color: #00f2fe; font-size: 16px;">${ing.confronto}</strong>
+                <span style="font-size: 12px; background: #0f3460; padding: 2px 6px; border-radius: 4px;">${ing.quantidade}x</span>
+            </div>
+            <p style="margin: 4px 0; font-size: 14px;"><i class="fas fa-map-marker-alt"></i> ${ing.estadio}</p>
+            <p style="margin: 4px 0; font-size: 14px;"><i class="fas fa-calendar-alt"></i> ${ing.dataJogo}</p>
+            <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 13px; color: #bbb;">
+                <span>Pago via: ${ing.metodoPagamento}</span>
+                <strong>Total: ${ing.totalPago}</strong>
+            </div>
+            <div style="margin-top: 8px; font-size: 11px; color: #888; text-align: right;">
+                Cod: ${ing.codigo} | Compra: ${ing.dataCompra}
+            </div>
+        `;
+        container.appendChild(ticketCard);
+    });
 }
